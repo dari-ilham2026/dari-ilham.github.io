@@ -20,23 +20,17 @@ body {
 }
 
 .container {
+    position: relative;
     background: rgba(255, 0, 80, 0.3);
     padding: 30px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 30px rgba(255, 0, 80, 0.5);
-    animation: fadeIn 2s ease-in-out;
+    z-index: 2;
 }
 
 h1 {
     font-size: 2.5em;
-    margin-bottom: 10px;
-}
-
-.flower {
-    width: 150px;
-    margin: 20px 0;
-    animation: float 3s ease-in-out infinite;
 }
 
 button {
@@ -47,12 +41,6 @@ button {
     color: #ff4e8a;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #ff4e8a;
-    color: white;
 }
 
 input {
@@ -60,17 +48,25 @@ input {
     border-radius: 20px;
     border: none;
     text-align: center;
-    margin-bottom: 10px;
 }
 
-@keyframes float {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+/* 🌹 Animasi bunga jatuh */
+.falling-flower {
+    position: absolute;
+    top: -50px;
+    width: 40px;
+    animation: fall linear infinite;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes fall {
+    0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 </style>
 </head>
@@ -79,29 +75,34 @@ input {
 
 <div class="container">
     <h1>Happy Valentine </h1>
+    <h2>Untuk Arinda Yolanica </h2>
 
-    <!-- Gambar Bunga -->
-    <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/rose-2027495_960_720.png" 
-         alt="Bunga Mawar" class="flower">
-
-    <h2 id="namaDisplay">Untuk Arinda Yolanica </h2>
-
-    <!-- Input Nama -->
-    <input type="text" id="namaInput" placeholder="Masukkan Nama">
     <br>
-    <button onclick="tampilkanNama()">Tampilkan Nama</button>
 
-    <br><br>
-
-    <!-- Musik (Upload file music.mp3 ke repo yang sama) -->
-    <audio controls autoplay loop>
-        <source src="music.mp3" type="audio/mpeg">
-        Browser tidak mendukung audio.
+    <audio controls>
+        <source src="musik.mp3" type="audio/mpeg">
     </audio>
 </div>
 
 <script>
-function tampilkanNama() {
-    var nama = document.getElementById("namaInput").value;
-    if(nama.trim() !== "") {
+// 🌹 Buat bunga muncul terus
+function createFlower() {
+    const flower = document.createElement("img");
+    flower.src = "https://cdn.pixabay.com/photo/2017/01/31/13/14/rose-2027495_960_720.png";
+    flower.classList.add("falling-flower");
 
+    flower.style.left = Math.random() * window.innerWidth + "px";
+    flower.style.animationDuration = (3 + Math.random() * 5) + "s";
+
+    document.body.appendChild(flower);
+
+    setTimeout(() => {
+        flower.remove();
+    }, 8000);
+}
+
+setInterval(createFlower, 500);
+</script>
+
+</body>
+</html>
